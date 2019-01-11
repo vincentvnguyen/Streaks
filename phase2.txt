@@ -1,0 +1,42 @@
+# team46 phase2.txt
+ - Clone the repository
+- `npm install`
+- `npm run migrate`
+   This runs the database migrations necessary to initialize the database with the necessary tables.
+- `npm run seed`
+   This inserts the first admin user into the database.
+- `npm start` to run the local development server
+- Then connect via localhost:3000, you will be directed to a sign in page where you can sign in using root credentials (see the end of this file)
+    if you'd like to use our sample data and have admin privileges. Or you can sign up as a new user, and then sign in using your user info.
+Dashboard (/):
+    Once signed in you will be directed to your dashboard, where you can add new streaks by pressing the plus button which
+    will expand to a form.
+    Once the form is completed correctly the new streak is added.
+    You can edit the streak info in a similar form.
+    Please note that weekly streaks weren't implemented due to time, but daily streaks are fully functional.
+Edit account (/users/edit/*)
+    You can edit account information by selecting settings from the drop down menu in the dashboard page on the top right corner.
+    Saving will redirect to dashboard.
+    Please note that profile pictures were never implemented due to time, but the placeholders from phase 1 remain.
+Sign out (/signout):
+    You can sign out by selecting sign out from the drop down menu on the top right corner. This will redirect to the
+    sign in page.
+Admin area (/admin):
+    By selecting the admin area button from the drop down menu on the top right corner. From this page you can edit and
+    delete users.
+Sign up (/signup):
+    By selecting sign up today! from the sign in page. here you can create a new account. Once created you will be directed
+    to the sign in page.
+
+Functionality - same features as outlined in proposal
+- Creating an account
+- Signing in and out
+    - Admin user credentials:
+        - Username: "root", password: "streaksrootpassword!"
+    - Normal user credentials:
+        - Username: "homer", password: "homerspassword!"
+- Creating, updating, and editing daily streaks
+- Completing or failing to complete daily streaks
+- Updating profile information
+- Viewing a list of users
+- Updating and deleting users

@@ -1,0 +1,33 @@
+<%- include('layoutBefore') -%>
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-header">
+                Sign in
+            </div>
+            <div class="card-body">
+                <% if (error.length > 0) { %>
+                <div class="alert alert-danger" role="alert">
+                    <%= error %>
+                </div>
+                <% } %>
+                <form action="/signin" method="POST" autocomplete="on">
+                    <div class="form-group">
+                        <input type="text" name="username" class="form-control" id="usernameInput" placeholder="Username" autocomplete="username" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" class="form-control" id="passwordInput" placeholder="Password" autocomplete="current-password" required>
+                    </div>
+                    <!-- Will convert this to submit login form later -->
+                    <button type="submit" class="btn btn-block btn-lg btn-outline-primary">Sign in</button>
+                </form>
+                <hr>
+                <p class="lead text-muted">Social sign in coming soon.</p>
+                <a href="#" class="btn btn-lg btn-block btn-outline-secondary disabled">Sign in with Google</a>
+                <hr>
+                Don't have an account? <a href="/signup">Sign up today!</a>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('layoutAfter') -%>

@@ -1,0 +1,42 @@
+<%- include('layoutBefore') -%>
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-header">
+                Sign up
+            </div>
+            <div class="card-body">
+                <% if (errors.length > 0) { %>
+                    <div class="alert alert-danger" role="alert">
+                        <ul>
+                            <% errors.forEach((error) => { %>
+                                <li><%= error.msg %></li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                <% } %>
+                <form action="/signup" method="POST" autocomplete="on">
+                    <div class="form-group">
+                        <input type="text" name="name" class="form-control" id="nameInput" placeholder="Name" autocomplete="name" value="<%= oldInput.name %>" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="username" class="form-control" id="usernameInput" placeholder="Username" autocomplete="username" value="<%= oldInput.username %>" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" class="form-control" id="emailInput" placeholder="Email" autocomplete="email" value="<%= oldInput.email %>" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" class="form-control" id="passwordInput" placeholder="Password" autocomplete="new-password" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="passwordConfirm" class="form-control" id="passwordConfirmInput" placeholder="Confirm password" autocomplete="new-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-block btn-lg btn-outline-primary">Get started</button>
+                </form>
+                <hr>
+                Have an account? <a href="/signin">Sign in</a>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('layoutAfter') -%>

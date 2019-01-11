@@ -1,0 +1,42 @@
+<%- include('layoutBefore') -%>
+<div class="row mb-4">
+    <div class="col-md">
+        <div class="card card-default">
+            <div class="card-body">
+                <h1>Users</h1>
+                <hr>
+                <input class="form-control" id="searchInput" type="text" placeholder="Search by email or username">
+                <br>
+                <% if (users.length > 0) { %>
+                <table class="table" id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% users.forEach((u) => { %>
+                        <tr>
+                            <td><%= u.id %></td>
+                            <td><%= u.username %></td>
+                            <td><%= u.email %></td>
+                            <td><%= u.name %></td>
+                            <td><%= u.userType %></td>
+                            <td><a href="/users/edit/<%= u.id %>" class="btn btn-sm btn-outline-primary">Edit</a></td>
+                            <td><a href="/users/delete/<%= u.id %>" class="btn btn-sm btn-outline-danger <% if (u.id == user.id) { %> disabled <% } %>">Delete</a></td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('layoutAfter') -%>

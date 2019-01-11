@@ -1,0 +1,55 @@
+<%- include('layoutBefore') -%>
+<div class="row mb-4 justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <h5 class="card-header">Edit Account</h5>
+            <div class="card-body">
+                <% if (errors.length > 0) { %>
+                    <div class="alert alert-danger" role="alert">
+                        <ul>
+                            <% errors.forEach((error) => { %>
+                                <li><%= error.msg %></li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                <% } %>
+                <form action="/users/edit/save" method="POST" autocomplete="on">
+                    <div class="row">
+                        <!-- Equal width columns for profile picture side and form side -->
+                        <div class="col-sm">
+                            <img src="/images/default.jpg" alt="Profile picture" class="img-thumbnail mb-3">
+                            <input type="file" id="profileInput" name="profilePicInput" class="hide-file-input"></input>
+                            <label for="profileInput" class="btn btn-sm btn-block btn-outline-dark">Change profile image</label>
+                        </div>
+                        <div class="col-sm">
+                            <input type="hidden" name="id" value="<%= userData.id %>">
+                            <div class="form-group">
+                                <label for="nameInput">Name</label>
+                                <input type="name" name="name" class="form-control" id="inputName" placeholder="Homer Simpson" value="<%= userData.name %>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="usernameInput">Username</label>
+                                <input type="text" name="username" class="form-control" id="usernameInput" placeholder="homer" value="<%= userData.username %>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="emailInput">Email address</label>
+                                <input type="email" name="email" class="form-control" id="emailInput" placeholder="homer@burnsnuclear.net" value="<%= userData.email %>" required>
+                            </div>
+                            <!-- Password fields should not be 'required' because empty means no change -->
+                            <div class="form-group">
+                                <label for="passwordInput">Password</label>
+                                <input type="password" name="password" class="form-control" id="passwordInput" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;" autocomplete="new-password">
+                            </div>
+                            <div class="form-group">
+                                <label for="passwordConfirmInput">Re-enter password</label>
+                                <input type="password" name="passwordConfirm" class="form-control" id="passwordConfirmInput" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;" autocomplete="new-password">
+                            </div>
+                            <button type="submit" class="btn btn-block btn-success">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('layoutAfter') -%>

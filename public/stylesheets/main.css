@@ -1,0 +1,78 @@
+/* Brand font */
+@import url('https://fonts.googleapis.com/css?family=Indie+Flower|Muli');
+
+.navbar-brand, .brand-font {
+    font-family: 'Indie Flower', sans-serif;
+    color: #4CAF50 !important;
+}
+
+/* ** Dashboard ** */
+
+/* Default to hidden, then show and hide in JS */
+#welcome-message {
+    display: none;
+}
+
+/* Default to hidden, only show when the add button is clicked */
+/* #create-streak {
+    display: none;
+} */
+
+.streak-form {
+    display: none;
+}
+
+/* Prevent the icons inside buttons from being the target of click events */
+/* This solves a VERY PESKY problem */
+button > * {
+  pointer-events: none;
+}
+
+/* Frequency input add-on text */
+.input-group-text {
+    background-color: #FFF;
+}
+
+.periodInput {
+    -webkit-appearance: none;
+    -webkit-border-radius-top-left: 0 !important;
+    -webkit-border-radius-bottom-left: 0 !important;
+}
+
+.frequencyInput {
+    text-align: center;
+}
+
+/* Fix styling bug with material icons inside buttons */
+.btn > .material-icons {
+    line-height: inherit;
+}
+
+/* Make button padding smaller */
+.edit-streak-button {
+    padding: 0.15rem 0.5rem !important;
+}
+/* Make icon inside button smaller */
+.edit-streak-button > .material-icons {
+    font-size: 0.8rem;
+}
+
+.streak .progress-bar-animated {
+    /* Slow down animation of streak progress bars */
+    animation-duration: 3s;
+}
+
+/* ** Edit account page ** */
+.hide-file-input {
+    /*
+    Hide the default "choose file" button that chrome and others render,
+    according to the following tutorial:
+    https://tympanus.net/codrops/2015/09/15/styling-customizing-file-inputs-smart-way/
+    */
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}

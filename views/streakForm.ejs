@@ -1,0 +1,67 @@
+<% if ( typeof errors != 'undefined' && errors.length > 0 && id == oldDataId) { %>
+    <div class="alert alert-danger" role="alert">
+        <ul>
+            <% errors.forEach((error) => { %>
+                <li><%= error.msg %></li>
+            <% }) %>
+        </ul>
+    </div>
+<% } %>
+<!-- Use s.id for form submission because we don't want to pass the -1 (for form creation) to the server -->
+<form action="/streaks/save/<%= s ? s.id : '' %>" method="post" autocomplete="off">
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label for="Name">Name</label>
+            <div class="input-group input-group-lg">
+                <input type="text" name="name" class="form-control" id="inputName" placeholder="Marathon training" value="<%= s.name %>">
+            </div>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="startDateInput">Start date</label>
+            <div class="input-group input-group-lg">
+                <input type="date" id="createStreakStartDateInput" class="form-control startDateInput" name="startDate" value="<%= date.format(new Date(s.startDate), 'YYYY-MM-DD') %>">
+            </div>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="endDateInput">End date</label>
+            <div class="input-group input-group-lg">
+                <input type="date" class="form-control endDateInput" name="endDate" value="<%= date.format(new Date(s.endDate), 'YYYY-MM-DD') %>">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-3">
+            <label for="frequencyInput">Frequency</label>
+            <div class="input-group input-group-lg">
+                <input type="number" class="form-control frequencyInput pl-2 pr-2" name="frequency" min="1" value="<%= s.frequency ? s.frequency : '1' %>">
+                <div class="input-group-append">
+                    <span class="input-group-text pl-2 pr-2" class="frequencyPlurality">time</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="periodInput">Period</label>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-lg btn-light <%= s.period != 'week' ? 'active' : '' %>">
+                    <input type="radio" name="period"  value="day" autocomplete="off" <%= s.period != 'week' ? 'checked' : '' %> checked> daily
+                </label>
+                <label class="btn btn-lg btn-light <%= s.period == 'week' ? 'active' : '' %> disabled">
+                    <input type="radio" name="period" value="week" autocomplete="off" <%= s.period == 'week' ? 'checked' : '' %>> weekly
+                </label>
+            </div>
+            <p class="text-secondary" style="font-size: 0.5rem">Weekly streaks coming soon!</p>
+        </div>
+        <div class="form-group col text-right">
+            <!-- Provide same vertical spacing to line up with other form elements -->
+            <label>&nbsp;</label>
+            <div class="input-group input-group-lg justify-content-end">
+                <!-- Use id rather than s.id here so that the create streak form can be shown and hidden with a false id -->
+                <button type="button" class="btn btn-lg btn-light streak-form-close" data-id="<%= id %>">Cancel</button>
+                <button type="submit" class="btn btn-lg btn-success ml-1">Save streak</button>
+            </div>
+        </div>
+    </div>
+    <% if (s) { %>
+        <a href="/streaks/delete/<%= s.id %>" class="text-danger">Delete this streak</a>
+    <% } %>
+</form>

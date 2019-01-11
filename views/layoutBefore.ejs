@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title><%= title %></title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="/stylesheets/datepicker.min.css" rel="stylesheet">
+    <link href="/stylesheets/main.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light flex-row">
+            <!-- Branding Image -->
+            <a class="navbar-brand ml-5" href="/">
+                streaks
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <% if (user) { %>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto mr-5">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <%= user.name %>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <% if (user.userType == 'admin') { %>
+                                <a class="dropdown-item" href="/admin">Admin area</a>
+                            <% } %>
+                            <a class="dropdown-item" href="/users/edit/<%= user.id %>">Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/signout">Sign out</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <% } %>
+        </nav>
+
+        <!-- Content -->
+        <div class="container mt-5 mb-5">

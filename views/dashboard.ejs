@@ -1,0 +1,155 @@
+<%- include('layoutBefore') -%>
+<div class="row mb-4">
+    <div class="col">
+        <% if (loginMessage) { %>
+        <div class="row pb-4">
+            <div class="col text-center">
+                <h1 id="welcome-message" class="brand-font">Welcome back, <span id="welcome-message-name"><%= user.name %></span>!</h2>
+            </div>
+        </div>
+        <% } %>
+        <div class="row justify-content-center">
+            <div class="col-md-4 col-sm-6 text-center">
+                <h3>Streaks maintained</h3>
+                <hr>
+                <!-- Width parameter ensures gauge is centred in container -->
+                <svg id="successgauge" width="97%" height="200px" data-value="<%= overallSuccessRate %>"></svg>
+                <hr>
+                <p class="text-secondary">of the time, you do it <span class="brand-font">every</span> time.</p>
+            </div>
+            <div class="col-md-4 col-sm-6 text-center">
+                <h3>Broken promises</h3>
+                <hr>
+                <svg id="failuregauge" width="97%" height="200px" data-value="<%= failuresThisMonth %>"></svg>
+                <hr>
+                <p class="text-secondary"><span class="brand-font">learning opportunities</span> this month.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10 col-sm-12">
+        <!-- <div class="card card-default">
+            <div class="card-body"> -->
+                <!-- id of -1 used for the create streak form -->
+                <button class="float-right btn btn-light streak-form-open" data-id="-1"><i class="material-icons">add</i></button>
+                <h1>Streaks</h1>
+                <hr>
+                <div class="streak-form mb-4" id="create-streak" data-id="-1">
+                    <%- include('streakForm', { s: false, id: -1 }) -%>
+                    <hr>
+                </div>
+                <% streaks.forEach((s) => { %>
+                  <div class="streak row mb-4" id="streak-<%= s.id %>">
+                      <div class="col-2 text-center">
+                          <!-- TODO: Add current streak length (just use days for now)-->
+                              <%
+                                const today = new Date()
+                                const startDate = new Date(s.startDate)
+                                let mostRecentRowId = 0
+                                let streakFinishedToday = false
+                                let rowsToday = 0
+
+                                // Create sorted array of streak history rows
+                                let streakHistoryArray = []
+                                s.streakHistory.forEach((row) => {
+                                    // Keep track of most recent streak history row
+                                    if (row.id > mostRecentRowId) {
+                                        mostRecentRowId = row.id
+                                    }
+
+                                    if ((new Date(row.endDate).getDate() == today.getDate())) {
+                                        rowsToday++
+                                    }
+
+                                    streakHistoryArray.push(row)
+                                })
+                                streakHistoryArray.sort((a, b) => {
+                                    return new Date(a.startDate).getTime() > new Date(b.startDate).getTime()
+                                })
+
+                                // Figure out whether or not the streak has been finished today
+                                // A streak is finished when it <frequency> successes or failures have been
+                                // recorded in a day
+                                let currentStreakLength = 0
+                                let currentStreakOutcome = 'failure'
+                                s.streakHistory.forEach((row) => {
+                                    if (row.id == mostRecentRowId && (new Date(row.endDate).getDate() == today.getDate()) && (((row.successes + row.failures) >= s.frequency) || rowsToday >= s.frequency)) {
+                                        streakFinishedToday = true
+                                    }
+
+                                    // Calculate the current streak length when we get to the most recent streak
+                                    if (row.id == mostRecentRowId) {
+                                        currentStreakOutcome = row.outcome
+                                        currentStreakLength = date.subtract(new Date(row.endDate), new Date(row.startDate)).toDays() + 1
+                                    }
+                                })
+
+                                %>
+                                <h1 class="<%= currentStreakOutcome == 'success' ? 'text-success' : 'text-danger' %>"><%= currentStreakLength %></h1>
+                          <span class="text-muted"><%= currentStreakLength > 1 ? 'days' : 'day' %></span>
+                      </div>
+                      <div class="col">
+                          <button type="button" class="edit-streak-button streak-form-open btn btn-light float-right" data-id="<%= s.id %>"><i class="material-icons">edit</i></button>
+                          <h4><%= s.name %></h4>
+                          <div class="streak-form mb-4" data-id="<%= s.id %>">
+                            <%- include('streakForm', { s: s, id: s.id }) -%>
+                          </div>
+                          <div class="progress mt-3 mb-2">
+                              <!-- TODO: Add back aria attributes for screen reader accessibility later! -->
+                              <% streakHistoryArray.forEach((row) => { %>
+                                  <%
+                                    // Overall streak start and end dates
+                                    const streakStartDate = new Date(s.startDate)
+                                    const streakEndDate = new Date(s.endDate)
+                                    // Start and end dates of this particular row of history
+                                    const rowStartDate = new Date(row.startDate)
+                                    const rowEndDate = new Date(row.endDate)
+                                    // Total length of the entire parent streak in periods
+                                    // TODO: Add support for weeks as well
+                                    const totalLength = (date.subtract(streakEndDate, streakStartDate).toDays() + 1) * parseInt(s.frequency)
+                                    const thisRowLength = (date.subtract(rowEndDate, rowStartDate).toDays() + 1) * parseInt(s.frequency)
+                                    // The width of the progress bar segment to render for this history row
+                                    const barWidth = Math.round(100 * (thisRowLength / totalLength))
+
+                                    const thisRowUpdatedToday = (row.id == mostRecentRowId && rowEndDate.getDate() == today.getDate())
+                                    console.log('Streak ' + s.id + '(' + row.outcome + ') this row (' + row.id + ') updated today: ', thisRowUpdatedToday, ' bar width: ' + barWidth)
+                                  %>
+
+                                  <%# If the current streak has been updated for today, display the animated success progress bar %>
+                                  <% if (thisRowUpdatedToday) { %>
+                                      <% if (row.outcome == 'success') { %>
+                                          <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: <%= barWidth %>%"></div>
+                                      <% } else if (row.outcome == 'failure') { %>
+                                          <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width: <%= barWidth %>%"></div>
+                                      <% } %>
+                                  <% } else if (row.id == mostRecentRowId) { %>
+                                      <%# Otherwise, display the animated warning progress bar %>
+                                      <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: <%= barWidth %>%" data-toggle="tooltip" data-placement="bottom" title="Complete your activity today to keep up the streak!"></div>
+                                  <% } %>
+
+                                  <% if (row.outcome == 'success' && row.id != mostRecentRowId) { %>
+                                      <div class="progress-bar bg-success" role="progressbar" style="width: <%= barWidth %>%"></div>
+                                  <% } else if (row.id != mostRecentRowId) { %>
+                                      <div class="progress-bar bg-danger" role="progressbar" style="width: <%= barWidth %>%" data-toggle="tooltip" data-placement="bottom" title="<%= date.format(rowStartDate, 'D MMM YYYY') %> - <%= date.format(rowEndDate, 'D MMM YYYY') %>"></div>
+                                  <% } %>
+                              <% }) %>
+                          </div>
+                          <!-- TODO: Disable button after the most recent row has been updated today -->
+                          <% if (!streakFinishedToday) {%>
+                              <a class="btn btn-sm btn-outline-success" href="/streaks/update/<%= s.id %>/success">Did it!</a>
+                              <a class="btn btn-sm btn-outline-danger" href="/streaks/update/<%= s.id %>/failure">Not quite</a>
+                         <% } else { %>
+                             <a class="btn btn-sm btn-outline-secondary disabled">Come back tomorrow!</a>
+                         <% } %>
+                        </div>
+                    </div>
+                <% }) %>
+                <% if (streaks.length == 0) { %>
+                    <p class="lead text-secondary">Get started by creating a new streak.</p>
+                <% } %>
+            <!-- </div>
+        </div> -->
+    </div>
+</div>
+<%- include('layoutAfter') -%>
